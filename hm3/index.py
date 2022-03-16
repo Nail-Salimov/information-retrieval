@@ -53,8 +53,10 @@ for i in range(1, 115):
 
 inverted_index_file = open("inverted_index.txt", "a", encoding='utf-8')
 for i in index:
-    inverted_index_file.write(i + ":")
-    for num in index[i]:
-        inverted_index_file.write(" " + str(num))
-    inverted_index_file.write("\n")
+    if len(index[i]) != 0:
+        inverted_index_file.write(i + ":")
+        for num in index[i]:
+            inverted_index_file.write(" " + str(num))
+        inverted_index_file.write("\n")
+
 inverted_index_file.close()
