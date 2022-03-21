@@ -20,17 +20,20 @@ def bool_search(query_string):
     if lemma in index:
         result = set(index[lemma])
     else:
-        result = []
+        result = set()
 
     for i in range(2, len(parts), 2):
         lemma = morph.parse(parts[i])[0].normal_form
+        documents = set()
         if lemma in index:
-            if parts[i - 1] == '&&':
-                result = result.intersection(index[lemma])
-            else:
-                result = result.union(index[lemma])
+            documents = index[lemma]
+
+        if parts[i - 1] == '&&':
+            result = result.intersection(documents)
+        else:
+            result = result.union(documents)
 
     return result
 
 
-print(bool_search('доработка || ворота'))
+print(bool_search('автоматизированный && лоремипсумамено'))
