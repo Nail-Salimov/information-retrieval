@@ -3,12 +3,14 @@ import pymorphy2
 from bs4 import BeautifulSoup
 import re
 
+
 def is_russian_word(word):
     for letter in word:
         e = ord(letter)
         if (e < 1040 or e > 1071) and (e < 1072 or e > 1078):
             return False
         return True
+
 
 def get_words_from_html(path):
     f = open(path, "r", encoding='utf-8')
@@ -37,7 +39,8 @@ def get_words_from_html(path):
         return_words.update(tuple(s))
     return return_words
 
-lemmas_file = open("C:\\Users\\Айдар\\PycharmProjects\\information-retrieval\\hm2\\lemmas.txt", "r", encoding='utf-8')
+
+lemmas_file = open("../hm2/lemmas.txt", "r", encoding='utf-8')
 index = {}
 for line in lemmas_file:
     lemma = line.split(':')[0]
@@ -45,7 +48,7 @@ for line in lemmas_file:
 
 morph = pymorphy2.MorphAnalyzer()
 for i in range(1, 115):
-    tokens = get_words_from_html("C:\\Users\\Айдар\\PycharmProjects\\html\\html\\" + str(i) + ".html")
+    tokens = get_words_from_html("../html/" + str(i) + ".html")
     for token in tokens:
         normal_form = morph.parse(token)[0].normal_form
         if normal_form in index:

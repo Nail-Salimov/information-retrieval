@@ -33,4 +33,4 @@ def bool_search(query_string):
     return result
 
 
-print(bool_search('волна && пандемия'))
+print(bool_search('доработка || ворота'))
