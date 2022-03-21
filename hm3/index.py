@@ -62,4 +62,21 @@ for i in index:
             inverted_index_file.write(" " + str(num))
         inverted_index_file.write("\n")
 
+term_index = {}
+for i in range(1, 115):
+    terms = get_words_from_html("../html/" + str(i) + ".html")
+    for term in terms:
+        if term not in term_index:
+            term_index[term] = [i]
+        else:
+            term_index[term].append(i)
+
+term_inverted_index_file = open("inverted_term_index.txt", "a", encoding='utf-8')
+for i in term_index:
+    if len(term_index[i]) != 0:
+        term_inverted_index_file.write(i + ":")
+        for num in term_index[i]:
+            term_inverted_index_file.write(" " + str(num))
+        term_inverted_index_file.write("\n")
+
 inverted_index_file.close()
