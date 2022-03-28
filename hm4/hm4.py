@@ -58,6 +58,7 @@ def l_counts(path, term_dic):
         i_dic = term_dic[i]
         new_i_dic = {}
         for term in i_dic:
+             #TODO проверка слово из inverted_term_index есть в lemmas, как термин (не лемма)
             if term in term_to_lem:
                 lem = term_to_lem[term]
                 if lem in new_i_dic:
@@ -68,7 +69,7 @@ def l_counts(path, term_dic):
         lem_dic[i] = new_i_dic
     return lem_dic
 
-
+#directory - папка куда сохранятся файлы
 def write_term_param(directory, dic, word_count):
     d = directory
     if os.path.exists(d):
