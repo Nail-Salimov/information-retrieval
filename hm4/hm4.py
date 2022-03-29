@@ -1,4 +1,4 @@
-import  math
+import math
 import os
 import shutil
 
@@ -7,7 +7,7 @@ def read_terms(path):
     word_count = {}
     dic = {}
 
-    f = open(path, "r")
+    f = open(path, "r", encoding='utf-8')
     while True:
         line = f.readline()
         if not line:
@@ -41,7 +41,7 @@ def read_terms(path):
 
 def l_counts(path, term_dic):
     term_to_lem = {}
-    f = open(path, "r")
+    f = open(path, "r", encoding='utf-8')
     while True:
         line = f.readline()
         if not line:
@@ -58,18 +58,17 @@ def l_counts(path, term_dic):
         i_dic = term_dic[i]
         new_i_dic = {}
         for term in i_dic:
-             #TODO проверка слово из inverted_term_index есть в lemmas, как термин (не лемма)
-            if term in term_to_lem:
-                lem = term_to_lem[term]
-                if lem in new_i_dic:
-                    lem_count = new_i_dic[lem]
-                    new_i_dic[lem] = lem_count + i_dic[term]
-                else:
-                    new_i_dic[lem] = i_dic[term]
+            lem = term_to_lem[term]
+            if lem in new_i_dic:
+                lem_count = new_i_dic[lem]
+                new_i_dic[lem] = lem_count + i_dic[term]
+            else:
+                new_i_dic[lem] = i_dic[term]
         lem_dic[i] = new_i_dic
     return lem_dic
 
-#directory - папка куда сохранятся файлы
+
+# directory - папка куда сохранятся файлы
 def write_term_param(directory, dic, word_count):
     d = directory
     if os.path.exists(d):
@@ -79,7 +78,7 @@ def write_term_param(directory, dic, word_count):
         path = d + "/" + i + ".txt"
         word_dic = dic[i]
         all_count = word_count[i]
-        with open(path, 'a') as file:
+        with open(path, 'a', encoding='utf-8') as file:
             for term in word_dic:
                 term_count = word_dic[term]
                 tf = term_count / all_count
@@ -88,11 +87,7 @@ def write_term_param(directory, dic, word_count):
                 file.write(s + "\n")
 
 
-dic, word_count = read_terms("inverted_term_index.txt")
-l_dic = l_counts("lemmas.txt", dic)
+dic, word_count = read_terms("../hm3/inverted_term_index.txt")
+l_dic = l_counts("../hm2/lemmas.txt", dic)
 write_term_param("term", dic, word_count)
 write_term_param("lem", l_dic, word_count)
-
-
-
-

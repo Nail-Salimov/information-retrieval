@@ -7,9 +7,10 @@ import re
 def is_russian_word(word):
     for letter in word:
         e = ord(letter)
-        if (e < 1040 or e > 1071) and (e < 1072 or e > 1078):
+        if e not in range(ord('А'), ord('Я')) and e not in range(ord('а'), ord('я')) \
+                and e != ord('Ё') and e != ord('ё'):
             return False
-        return True
+    return True
 
 
 def get_words_from_html(path):
@@ -32,11 +33,11 @@ def get_words_from_html(path):
     r = re.compile("[а-яА-Я]+")
     clear_words = [w for w in filter(is_russian_word, dirty_words)]
     # word = re.sub('[^0-9А-Яa-я]+', '', str)
-    clear_words = [re.sub('[^0-9А-Яa-я]+', ' ', w).strip() for w in clear_words]
+    clear_words = [re.sub('[^0-9А-Яa-яёЁ]+', ' ', w).strip() for w in clear_words]
     return_words = list()
     for word in clear_words:
         s = word.split()
-        return_words.extend(tuple(s))
+        return_words.extend(tuple(filter(is_russian_word, s)))
     return [s.lower() for s in return_words]
 
 
@@ -47,7 +48,7 @@ for line in lemmas_file:
     index[lemma] = []
 
 morph = pymorphy2.MorphAnalyzer()
-for i in range(1, 115):
+for i in range(0, 115):
     tokens = get_words_from_html("../html/" + str(i) + ".html")
     for token in tokens:
         normal_form = morph.parse(token)[0].normal_form
@@ -63,7 +64,7 @@ for i in index:
         inverted_index_file.write("\n")
 
 term_index = {}
-for i in range(1, 115):
+for i in range(0, 115):
     terms = get_words_from_html("../html/" + str(i) + ".html")
     for term in terms:
         if term not in term_index:

@@ -9,14 +9,15 @@ import pymorphy2
 def is_russian_word(word):
     for letter in word:
         e = ord(letter)
-        if (e < 1040 or e > 1071) and (e < 1072 or e > 1078):
+        if e not in range(ord('А'), ord('Я')) and e not in range(ord('а'), ord('я')) \
+                and e != ord('Ё') and e != ord('ё'):
             return False
-        return True
+    return True
 
 
 # возвращает слова из html файла
 def get_words_from_html(path):
-    f = open(path, "r")
+    f = open(path, "r", encoding='utf-8')
     html = f.read()
     soup = BeautifulSoup(html, features="html.parser")
     for script in soup(["script", "style", "header", "footer"]):
@@ -32,10 +33,9 @@ def get_words_from_html(path):
     # разбить слова по символам (split)
     dirty_words = set(re.split(' |\n|«|»|,|:|–|-|}|{', text))
 
-    r = re.compile("[а-яА-Я]+")
     clear_words = [w for w in filter(is_russian_word, dirty_words)]
     # word = re.sub('[^0-9А-Яa-я]+', '', str)
-    clear_words = [re.sub('[^0-9А-Яa-я]+', ' ', w).strip() for w in clear_words]
+    clear_words = [re.sub('[^0-9А-Яa-яёЁ]+', ' ', w).strip() for w in clear_words]
     return_words = set()
     for word in clear_words:
         s = word.split()
@@ -56,7 +56,7 @@ def get_all_words(directory):
 
 # создает файл со словами
 def create_tokens_file(words):
-    with open('tokens.txt', 'a') as file:
+    with open('tokens.txt', 'a', encoding='utf-8') as file:
         for word in words:
             file.write(word + "\n")
 
@@ -81,7 +81,7 @@ def get_lemmas_dict(words):
 # создает файл с леммами
 def create_lemmas_file(words):
     lemmas_dict = get_lemmas_dict(words)
-    with open('lemmas.txt', 'a') as file:
+    with open('lemmas.txt', 'a', encoding='utf-8') as file:
         for lemma in lemmas_dict:
             words = lemmas_dict[lemma]
             s = ' '.join(str(e) for e in words)
@@ -89,6 +89,6 @@ def create_lemmas_file(words):
             file.write(s + "\n")
 
 
-all_words = get_all_words('html')
+all_words = get_all_words('../html')
 create_tokens_file(all_words)
 create_lemmas_file(all_words)
