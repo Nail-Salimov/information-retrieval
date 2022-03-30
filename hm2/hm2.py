@@ -9,7 +9,7 @@ import pymorphy2
 def is_russian_word(word):
     for letter in word:
         e = ord(letter)
-        if e not in range(ord('А'), ord('Я')) and e not in range(ord('а'), ord('я')) \
+        if e not in range(ord('А'), ord('Я') + 1) and e not in range(ord('а'), ord('я') + 1) \
                 and e != ord('Ё') and e != ord('ё'):
             return False
     return True
