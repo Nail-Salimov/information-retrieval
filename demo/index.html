@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+<script>
+    function search() {
+        let query = document.getElementById('search').value
+        let type = document.getElementById('type').value
+        fetch(`http://localhost:8080?search=${encodeURIComponent(query)}&type=${type}`)
+            .then(response => response.json())
+            .then(docs => {
+                document.getElementById('result').innerHTML = ''
+                if (docs.length) {
+                    docs.forEach(e => {
+                        document.getElementById('result').innerHTML += `<p><a href="/${e}">${e}</a></p>`
+                    })
+                } else {
+                    document.getElementById('result').innerHTML = 'Not Found'
+                }
+            })
+    }
+</script>
+<form>
+    <label for="search"><input id="search" name="search"></label>
+    <label for="type">
+        <select name="type" id="type">
+            <option value="index">index</option>
+            <option selected value="vector">vector</option>
+        </select>
+    </label>
+</form>
+<button onclick="search()">Search</button>
+<div id="result">
+
+</div>
+</body>
+</html>

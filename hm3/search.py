@@ -36,4 +36,5 @@ def bool_search(query_string):
     return result
 
 
-print(bool_search('автоматизированный && лоремипсумамено'))
+if __name__ == '__main__':
+    print(bool_search('автоматизированный && лоремипсумамено'))

@@ -15,7 +15,7 @@ def line_to_record(line):
 
 idf = {}
 for i in range(0, 114):
-    file_ = open('../hm4/term/term/' + str(i) + '.txt', 'r', encoding='utf-8')
+    file_ = open('../hm4/term/' + str(i) + '.txt', 'r', encoding='utf-8')
     records_ = [line_to_record(line) for line in file_]
     for r_ in records_:
         idf[r_['term']] = r_['idf']
@@ -52,7 +52,7 @@ def similarity(path, search_text):
 
 
 def search(search_text):
-    return sorted([{'similarity': similarity('../hm4/term/term/' + str(j) + '.txt', search_text), 'index': j} for j
+    return sorted([{'similarity': similarity('../hm4/term/' + str(j) + '.txt', search_text), 'index': j} for j
                    in range(0, 114)],
                   key=lambda d: d['similarity'], reverse=True)
 
